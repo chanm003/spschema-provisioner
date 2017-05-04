@@ -10,3 +10,23 @@ This project contains only one folder `data-generator`.  Copy the folder to a Sh
 
 ## Snippet Creating List Items
 ![alt text](https://raw.githubusercontent.com/chanm003/spschema-provisioner/master/data-generator/examples/generate-listitems-snippet.PNG)
+
+## Representing Different types of SPField
+Above screenshots only show Single line of text, Multiple lines of text, and Lookup.
+
+Also supported are:
+* Choice (Dropdown, Radio, Checkboxes)
+* Number
+* Date and Time
+* Lookup (allow multiple)
+* Yes/No
+* Person or Group
+* Person or Group (allow multiple)
+* Hyperlink/Picture
+* Calculated
+
+When defining your fields ensure illegal characters inside strings are escaped:
+```
+{ Description: 'Use &quot; for single quote, &amp; for ampersand, etc.'}
+```
+Please refer to `data-generator/examples/how-to-represent-spfields.js`
