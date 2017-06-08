@@ -2,6 +2,7 @@
     window.spSchemaProvisioner = window.spSchemaProvisioner || {};
     window.spSchemaProvisioner.generateDataStore = generateDataStore;
     window.spSchemaProvisioner.insertListItems = insertListItems;
+    window.spSchemaProvisioner.fieldValues = {};
 
     var fieldAttributeValuesValidation = {
         AppendOnly: function (val) {
@@ -373,16 +374,7 @@
             var listItem = list.addItem(new SP.ListItemCreationInformation());
 
             for (var propName in item) {
-                if (propName.endsWith("Id")) {
-                    //assume lookup column
-                    var lookupID = item[propName];
-                    propName = propName.replace("Id", "");
-                    var lookupVal = new SP.FieldLookupValue();
-                    lookupVal.set_lookupId(lookupID)
-                    listItem.set_item(propName, lookupVal);
-                } else {
-                    listItem.set_item(propName, item[propName]);
-                }
+                listItem.set_item(propName, item[propName]);
                 listItem.update();
                 ctx.load(listItem);
                 listItems.push(listItem);
@@ -474,6 +466,23 @@
             });
     }
 
+    window.spSchemaProvisioner.fieldValues.generateForLookupField = function(lookupID) {
+        var lookupVal = new SP.FieldLookupValue();
+        lookupVal.set_lookupId(lookupID);
+        return lookupVal;
+    }
+
+    window.spSchemaProvisioner.fieldValues.generateForPersonField = function(userID) {
+        var lookupVal = new SP.FieldUserValue();
+        lookupVal.set_lookupId(userID);
+        return lookupVal;
+    }
+
+    window.spSchemaProvisioner.fieldValues.generateForPersonMultiField = function(array_of_userID) {
+        return _.map(array_of_userID, function(userID){
+            return window.spSchemaProvisioner.fieldValues.generateForPersonField(userID);
+        });
+    }
 })();
 
 

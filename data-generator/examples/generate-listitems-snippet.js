@@ -10,9 +10,9 @@ function createTasks(projectListItems){
 	return spSchemaProvisioner.insertListItems({
 	    listTitle: 'Tasks',
 	    itemsToCreate: [
-	    	{ TaskName: 'Wash Car', RelatedProjectId: projectId},
-	    	{ TaskName: 'Take Photos', RelatedProjectId: projectId},
-	    	{ TaskName: 'Post Ad', RelatedProjectId: projectId}
+	    	{ TaskName: 'Wash Car', RelatedProject: spSchemaProvisioner.fieldValues.generateForLookupField(projectId)},
+	    	{ TaskName: 'Take Photos', RelatedProject: spSchemaProvisioner.fieldValues.generateForLookupField(projectId)},
+	    	{ TaskName: 'Post Ad', RelatedProject: spSchemaProvisioner.fieldValues.generateForLookupField(projectId)}
 	    ]
 	});
 }
