@@ -472,6 +472,12 @@
         return lookupVal;
     }
 
+    window.spSchemaProvisioner.fieldValues.generateForLookupMultiField = function(array_of_lookupID) {
+        return _.map(array_of_lookupID, function(lookupID){
+            return window.spSchemaProvisioner.fieldValues.generateForLookupField(lookupID);
+        });
+    }
+
     window.spSchemaProvisioner.fieldValues.generateForPersonField = function(userID) {
         var lookupVal = new SP.FieldUserValue();
         lookupVal.set_lookupId(userID);
