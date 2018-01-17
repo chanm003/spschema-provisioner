@@ -145,5 +145,16 @@ var fieldDefinitionExamples = [
         FieldRefs: ['Organization'],
         Description: 'Used for web part filtering.  Extract left portion whenever &quot; - &quot; is found in the &quot;Organization&quot; field',
         ShowInDisplayForm: 'FALSE'
+    },
+    {
+        //EXAMPLE: Currency
+        Name: "EstimatedCost",
+        DisplayName: "Estimated Cost",
+        Type: "Currency",
+        Required: "FALSE",
+        Decimals: 2, 							//please use number between 0 and 5 only
+        Min: 0,								//(optional)	
+        Max: 10000,								//(optional)	
+        Default: 100								//(optional)	
     }
 ];

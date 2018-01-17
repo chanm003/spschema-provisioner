@@ -78,7 +78,7 @@
             return _.isString(val) && _.includes(['TRUE', 'FALSE'], val.toUpperCase());
         },
         Type: function (val) {
-            return _.isString(val) && _.includes(['Boolean', 'Calculated', 'Choice', 'DateTime', 'Lookup', 'LookupMulti', 'MultiChoice', 'Note', 'Number', 'Text', 'URL', 'User', 'UserMulti'], val);
+            return _.isString(val) && _.includes(['Boolean', 'Calculated', 'Choice', 'Currency', 'DateTime', 'Lookup', 'LookupMulti', 'MultiChoice', 'Note', 'Number', 'Text', 'URL', 'User', 'UserMulti'], val);
         },
         UserSelectionMode: function (val) {
             return _.isString(val) && _.includes(['PeopleAndGroups', 'PeopleOnly'], val);
@@ -112,6 +112,7 @@
             "Boolean": generateCamlForBooleanField,
             "Calculated": generateCamlForCalculatedField,
             "Choice": generateCamlForChoiceField,
+            "Currency": generateCamlForCurrencyField,
             "DateTime": generateCamlForDateTimeField,
             "Lookup": generateCamlForLookupField,
             "LookupMulti": generateCamlForLookupMultiField,
@@ -192,6 +193,13 @@
     function generateCamlForCalculatedField(mapping) {
         var supported = ["Name", "DisplayName", "Type", "Required", "ResultType", "ReadOnly", "Formula", "FieldRefs", "Description", "ShowInDisplayForm", "Format"];
         return generateCaml(mapping, supported);
+    }
+
+    
+    function generateCamlForCurrencyField(mapping) {
+        var supported = ["Name", "DisplayName", "Type", "Required", "Decimals", "Min", "Max", "Default", "Description", "ShowInNewForm", "ShowInEditForm", "Hidden"];
+        return generateCaml(mapping, supported);
+
     }
 
     function generateCamlForDateTimeField(mapping) {
