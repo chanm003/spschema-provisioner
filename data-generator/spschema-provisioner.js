@@ -2,6 +2,7 @@
     window.spSchemaProvisioner = window.spSchemaProvisioner || {};
     window.spSchemaProvisioner.generateDataStore = generateDataStore;
     window.spSchemaProvisioner.insertListItems = insertListItems;
+    window.spSchemaProvisioner.insertDocuments = insertDocuments;
     window.spSchemaProvisioner.fieldValues = {};
 
     var fieldAttributeValuesValidation = {
@@ -366,6 +367,55 @@
 
         function onQueryFailed(sender, args) {
             console.error('Request to create Lookup Field: "' + fieldDef.Name + '" in the list: "' + listDef.Title + '" failed.', args.get_message(), args.get_stackTrace());
+            dfd.reject();
+        }
+    }
+    
+    function insertDocuments(opts) {
+    	opts.webUrl = opts.webUrl || _spPageContextInfo.webServerRelativeUrl;
+        var dfd = $.Deferred();
+        var ctx = new SP.ClientContext(opts.webUrl);
+        var spWeb = ctx.get_web();
+        var list = spWeb.get_lists().getByTitle(opts.listTitle);
+        var listItems = [];
+
+        _.each(opts.itemsToCreate, function (item) {
+        	var newFile;
+            var fileCreateInfo = new SP.FileCreationInformation();  
+			fileCreateInfo.set_url(item['FileLeafRef']);
+			fileCreateInfo.set_content(new SP.Base64EncodedByteArray());
+			fileCreateInfo.set_overwrite(true);			
+			for (var i = 0; i < item['FileData'].length; i++) {  
+				fileCreateInfo.get_content().append(item['FileData'].charCodeAt(i));  
+			}  
+			newFile = list.get_rootFolder().get_files().add(fileCreateInfo);  
+			var listItem = newFile.get_listItemAllFields();
+			for (var propName in item) {
+				if(propName !== 'FileLeafRef' && propName !== 'FileData') {
+                	listItem.set_item(propName, item[propName]);
+                	listItem.update();
+                	listItems.push(listItem);
+                }
+          	}
+			ctx.load(newFile);
+        });
+
+        ctx.executeQueryAsync(
+            Function.createDelegate(this, onListItemsAdded),
+            Function.createDelegate(this, onQueryFailed)
+        );
+        
+        return dfd.promise();
+
+        function onListItemsAdded() {
+        	//unique file names
+        	var numFilesCreated = _.uniq(opts.itemsToCreate.map(function(item){ return item.FileLeafRef })).length;
+            console.warn('Created ' + numFilesCreated + ' document(s) in the library: "' + opts.listTitle + '"');
+            dfd.resolve(listItems);
+        }
+
+        function onQueryFailed(sender, args) {
+            console.error('Request to add documents in "' + opts.listTitle + '" failed: ', args.get_message(), args.get_stackTrace());
             dfd.reject();
         }
     }
