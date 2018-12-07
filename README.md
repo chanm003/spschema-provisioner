@@ -11,6 +11,9 @@ This project contains only one folder `data-generator`.  Copy the folder to a Sh
 ## Snippet Creating List Items
 ![alt text](https://raw.githubusercontent.com/chanm003/spschema-provisioner/master/data-generator/examples/generate-listitems-snippet.PNG)
 
+## Snippet Creating Files in Document Library
+![alt text](https://raw.githubusercontent.com/chanm003/spschema-provisioner/master/data-generator/examples/generate-items-in-doclib-snippet.PNG)
+
 ## Representing Different types of SPField
 Above screenshots only show Single line of text, Multiple lines of text, and Lookup.
 
